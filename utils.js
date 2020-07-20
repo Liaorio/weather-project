@@ -9,8 +9,8 @@ const geocode = (address, callback) => {
       callback('No location found');
     } else {
       const data = res.body.features[0];
-      const lat = data.center[0];
-      const lon = data.center[1];
+      const lat = data.center[1];
+      const lon = data.center[0];
       const location = data.place_name;
       callback(null, { lat, lon, location });
     }
@@ -18,8 +18,7 @@ const geocode = (address, callback) => {
 }
 
 const forecast = ({ lat, lon }, callback) => {
-  const kelvinToCelsius = k => (k - 273.15).toFixed(1);
-  const url = `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&APPID=e5f4b8d15239e42e30946efb39966870`;
+  const url = `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&APPID=e5f4b8d15239e42e30946efb39966870&units=metric`;
   request({ url, json: true }, (error, res) => {
     if(error) {
       callback('Unable to connect to temperature services');
@@ -27,7 +26,7 @@ const forecast = ({ lat, lon }, callback) => {
       callback('No temperature data found');
     } else {
       const data = res.body.list[0];
-      callback(null, { temp: kelvinToCelsius(data.main.temp), time: data.dt_txt  });
+      callback(null, { temp: data.main.temp, time: data.dt_txt });
     }
   });
 }

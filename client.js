@@ -7,8 +7,9 @@ searchBtn.addEventListener("click", () => {
   const address = searchForm.value;
   fetch(`http://localhost:3000/weather?address=${address}`).then((res) => {
     res.json().then((data) => {
-      console.log(data);
-      message.textContent = data.temp;
+      const { temp, time } = data;
+      const resultStr = `The weather of ${address} at ${time} is ${temp}`;
+      message.textContent = resultStr;
     });
   });
 });
